@@ -1,0 +1,24 @@
+Velocity grid
+Position, x
+Time, t
+Density, P (constant)
+scalar pressure field, p(x, t)
+Kinematic viscosity, v
+F = (fx, fy)
+
+
+Navier-Stokes:
+du/dt = -(u * delta) * v - 1/P * delta * p + v * delta^2 * u + F
+
+Advecation:
+-(u * delta) * v
+
+Pressure:
+1/P * delta * p
+
+Diffusion:
+v * delta^2
+
+External Forces:
+F
+
