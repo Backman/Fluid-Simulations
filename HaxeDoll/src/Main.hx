@@ -1,10 +1,13 @@
-
+import ragdoll.PointMass;
+import ragdoll.Skeleton;
 import luxe.Input;
 
 class Main extends luxe.Game {
 
+	var skeleton : Skeleton;
+	
     override function ready() {
-
+    	skeleton = new Skeleton();
     } //ready
 
     override function onkeyup( e:KeyEvent ) {
@@ -16,7 +19,7 @@ class Main extends luxe.Game {
     } //onkeyup
 
     override function update(dt:Float) {
-
+    	skeleton.update(dt);
     } //update
 
 
