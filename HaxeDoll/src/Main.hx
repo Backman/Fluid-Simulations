@@ -4,9 +4,11 @@ import luxe.Input;
 
 class Main extends luxe.Game {
 
+	var updateRate : Float;
 	var skeleton : Skeleton;
 	
     override function ready() {
+    	updateRate = 1.0 / 60.0;
     	skeleton = new Skeleton();
     } //ready
 
@@ -19,7 +21,8 @@ class Main extends luxe.Game {
     } //onkeyup
 
     override function update(dt:Float) {
-    	skeleton.update(dt);
+    	skeleton.update(updateRate);
+    	skeleton.render();
     } //update
 
 

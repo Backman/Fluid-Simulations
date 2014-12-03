@@ -7,25 +7,36 @@ import ragdoll.PointMass;
 class Skeleton {
 	var Constraints : Array<Constraint>;
 	var Points : Array<PointMass>;
-
+	var Forces : Map<PointMass, Vector>;
 
 	public function new() {
 		initHumanSkeleton();
 	}
 
 	public function update(dt:Float) {
+
+		verletIntegration(dt);
+
+	}
+
+	function verletIntegration(dt:Float) {
+
+	}
+
+	public function render() {
 		for(point in Points) {
-			point.update(dt);
+			point.render();
 		}
 
-		for(constarint in Constraints) {
-			constarint.render();
+		for(constraint in Constraints) {
+			constraint.render();
 		}
 	}
 
 	public function initHumanSkeleton() {
 		Points = new Array<PointMass>();
 		Constraints = new Array<Constraint>();
+		
 
 		var neckLength = 40;
 		Points.push(new PointMass(320, 180, 20));

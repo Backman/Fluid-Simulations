@@ -21,7 +21,7 @@ class PointMass {
 		}
 	}
 
-	public function update(delta : Float) {
+	public function render() {
 		RenderUtil.drawPoint(x, y, new Color(0.8, 0.3, 0.4, 1.0), 5);
 	}
 
