@@ -4,11 +4,20 @@
 Application::Application() :
 	_window(nullptr)
 {
+	_skeletons.push_back(new Skeleton(1.0f));
 }
 
 
 Application::~Application()
 {
+	clearSkeletons();
+}
+
+void Application::clearSkeletons() {
+	while (!_skeletons.empty()) {
+		delete _skeletons.back();
+		_skeletons.pop_back();
+	}
 }
 
 void Application::shutdown() {
@@ -43,15 +52,37 @@ void Application::processEvent() {
 		if (evt.type == sf::Event::Closed) {
 			_window->close();
 		}
+		handleKeyEvents(evt);
 	}
 }
 
 void Application::tick() {
+	//_particleSystem.timeStep();
+	for (auto& skeleton : _skeletons) {
+		skeleton->update(1.0f / 600.0f);
+	}
+}
 
+void Application::handleKeyEvents(sf::Event& evt) {
+	switch (evt.key.code) {
+	case sf::Keyboard::Space:
+		//_particleSystem.timeStep();
+		break;
+
+	case sf::Keyboard::Escape:
+		_window->close();
+		break;
+	}
 }
 
 void Application::render() {
 	_window->clear();
+
+	//_particleSystem.render(_window);
+
+	for (auto& skeleton : _skeletons) {
+		skeleton->render(_window);
+	}
 
 	_window->display();
 }

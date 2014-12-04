@@ -1,5 +1,6 @@
 package ragdoll;
 import luxe.Color;
+import luxe.Vector;
 import ragdoll.Constraint;
 import ragdoll.RenderUtil;
 import ragdoll.PointMass;
@@ -9,17 +10,46 @@ class Skeleton {
 	var Points : Array<PointMass>;
 	var Forces : Map<PointMass, Vector>;
 
+	public var Gravity : Vector;
+
 	public function new() {
+		Gravity = new Vector(0.0, 9.82);
 		initHumanSkeleton();
 	}
 
-	public function update(dt:Float) {
+	public function update(timeStep:Float) {
+		accumulateForces();
+		verletIntegration(timeStep);
+		applyConstraints();
+	}
 
-		verletIntegration(dt);
+	function verletIntegration(timeStep:Float) {
+		for(point in Points) {
+			point.verlet(timeStep);
+		}
+	}
+
+	function accumulateForces() {
+		for(point in Points) {
+			point.accumulateForce(Gravity);
+		}
+	}
+
+	function applyConstraints() {
+		for(constraint in Constraints) {
+			/*if(constraint.type == Linear) {
+				applyLinearConstraints();
+			} else if(constraint.type == Rotation) {
+				applyRotationConstraints();
+			}*/
+		}
+	}
+
+	function applyLinearConstraints() {
 
 	}
 
-	function verletIntegration(dt:Float) {
+	function applyRotationConstraints() {
 
 	}
 
