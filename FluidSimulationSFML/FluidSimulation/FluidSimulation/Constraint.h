@@ -1,5 +1,6 @@
 #pragma once
 
+#include "VectorUtil.h"
 #include "PointMass.h"
 #include <SFML\Graphics.hpp>
 
@@ -16,7 +17,9 @@ class LinearConstraint : public Constraint {
 public:
 	LinearConstraint(PointMass* p1, PointMass* p2) :
 		_p1(p1), _p2(p2)
-	{}
+	{
+		_restLength = distanceBetween(p1->getPosition(), p2->getPosition());
+	}
 
 	~LinearConstraint()
 	{
@@ -36,6 +39,8 @@ public:
 private:
 	PointMass* _p1;
 	PointMass* _p2;
+
+	float _restLength;
 };
 
 class RotationConstraint : public Constraint {
@@ -65,17 +70,18 @@ private:
 	float _angle;
 };
 
-class FixedDistanceConstraint : public Constraint {
+class NotUnderScreenConstraint : public Constraint {
 public:
-	FixedDistanceConstraint(PointMass* p1, PointMass* p2, float restLength) :
-		_p1(p1), _p2(p2), _restLength(restLength)
+	NotUnderScreenConstraint(PointMass* p) :
+		_p(p)
 	{}
 
-	virtual void applyConstraint() override;
-	virtual void render(sf::RenderWindow* rw) override;
+	virtual void applyConstraint() override {
+		if (_p->getPosition().y > 768.0f) {
+			_p->setPosition(sf::Vector2f(_p->getPosition().x, 768.0f));
+		}
+	}
 
 private:
-	PointMass* _p1;
-	PointMass* _p2;
-	float _restLength;
+	PointMass* _p;
 };

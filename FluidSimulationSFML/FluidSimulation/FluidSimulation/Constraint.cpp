@@ -2,7 +2,16 @@
 #include "VectorUtil.h"
 
 void LinearConstraint::applyConstraint() {
+	sf::Vector2f& x1 = _p1->getPosition();
+	sf::Vector2f& x2 = _p2->getPosition();
+	sf::Vector2f delta = x2 - x1;
 
+	float deltaLength = sqrt(dot(delta, delta));
+	float diff = (deltaLength - _restLength) / (deltaLength * (_p1->getInvMass() + _p2->getInvMass()));
+
+
+	x1 += _p1->getInvMass() * delta * diff;
+	x2 -= _p2->getInvMass() * delta * diff;
 }
 
 void LinearConstraint::render(sf::RenderWindow* rw) {
@@ -20,22 +29,5 @@ void RotationConstraint::applyConstraint() {
 }
 
 void RotationConstraint::render(sf::RenderWindow* rw) {
-
-}
-
-void FixedDistanceConstraint::applyConstraint() {
-	
-	sf::Vector2f& x1 = _p1->getPosition();
-	sf::Vector2f& x2 = _p2->getPosition();
-	sf::Vector2f delta = x2 - x1;
-
-	float deltaLength = sqrt(dot(delta, delta));
-	float diff = (deltaLength - _restLength) / (deltaLength * (_p1->getInvMass() + _p2->getInvMass()));
-
-	x1 += _p1->getInvMass() * delta * diff;
-	x2 -= _p2->getInvMass() * delta * diff;
-}
-
-void FixedDistanceConstraint::render(sf::RenderWindow* rw) {
 
 }

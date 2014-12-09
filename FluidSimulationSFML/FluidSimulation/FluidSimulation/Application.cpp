@@ -59,7 +59,7 @@ void Application::processEvent() {
 void Application::tick() {
 	//_particleSystem.timeStep();
 	for (auto& skeleton : _skeletons) {
-		skeleton->update(1.0f / 600.0f);
+		skeleton->update(1.0f / 60.0f);
 	}
 }
 
