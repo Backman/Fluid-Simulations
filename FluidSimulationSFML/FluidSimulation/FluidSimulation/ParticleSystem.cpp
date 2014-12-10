@@ -10,7 +10,6 @@ ParticleSystem::ParticleSystem() :
 	_points[1].setPosition(sf::Vector2f(100.0f, 100.0f), true);
 	_points[1].setMass(10.0f);
 
-	_constraints.push_back(new FixedDistanceConstraint(&_points[0], &_points[1], 100.0f));
 }
 
 
