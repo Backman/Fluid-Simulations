@@ -41,7 +41,7 @@ void Skeleton::verlet(float timeStep) {
 		sf::Vector2f& oldX = p->getOldPosition();
 		sf::Vector2f& a = p->getForce();
 
-		x = x * 2.0f - oldX + a * timeStep * timeStep;
+		x += x - oldX + a * timeStep * timeStep;
 
 		oldX = temp;
 	}
@@ -50,7 +50,7 @@ void Skeleton::verlet(float timeStep) {
 void Skeleton::accumulateForces() {
 	for (auto& p : _points) {
 		p->clearForce();
-		p->addForce(sf::Vector2f(0.0f, -_gravity));
+		p->addForce(sf::Vector2f(0.0f, _gravity));
 	}
 }
 
@@ -119,6 +119,10 @@ void Skeleton::initHumanSkeleton() {
 	_points.push_back(new PointMass(320.0f + legSeparation, 180.0f + lowerLegs, 20.0f));
 	_constraints.push_back(new LinearConstraint(_points[12], _points[14]));
 	_constraints.push_back(new LinearConstraint(_points[13], _points[15]));
+
+	for (auto& p : _points) {
+		p->setOldPosition(p->getPosition());
+	}
 }
 
 void Skeleton::render(sf::RenderWindow* rw) {

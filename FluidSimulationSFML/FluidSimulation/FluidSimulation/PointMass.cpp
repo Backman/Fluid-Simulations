@@ -26,10 +26,9 @@ PointMass::~PointMass()
 void PointMass::setMass(float newMass) {
 	_mass = newMass;
 
-	if (_mass != 0.0) {
-		_invMass = 1.0 / _mass;
-	}
-	else {
+	if (_mass != 0.0f) {
+		_invMass = 1.0f / _mass;
+	} else {
 		_invMass = std::numeric_limits<float>::max();
 	}
 }
