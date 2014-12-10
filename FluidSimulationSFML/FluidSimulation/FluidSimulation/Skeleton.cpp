@@ -41,13 +41,7 @@ void Skeleton::verlet(float timeStep) {
 		sf::Vector2f& oldX = p->getOldPosition();
 		sf::Vector2f& a = p->getForce();
 
-<<<<<<< HEAD
-		x += x - oldX + a * timeStep * timeStep;
-
-=======
 		x = x * 2.0f - oldX + a * timeStep * timeStep;
-		
->>>>>>> cc4f24442934f147eeea9dde0a65165cb7c4fb2f
 		oldX = temp;
 	}
 }
@@ -127,11 +121,7 @@ void Skeleton::initHumanSkeleton() {
 
 	for (auto& p : _points) {
 		p->setOldPosition(p->getPosition());
-<<<<<<< HEAD
-=======
-
 		_constraints.push_back(new NotUnderScreenConstraint(p));
->>>>>>> cc4f24442934f147eeea9dde0a65165cb7c4fb2f
 	}
 }
 

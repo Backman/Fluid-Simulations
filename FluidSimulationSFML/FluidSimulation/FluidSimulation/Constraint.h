@@ -77,7 +77,7 @@ public:
 	{}
 
 	virtual void applyConstraint() override {
-		if (_p->getPosition().y > 768.0f) {
+		if(_p->getPosition().y > 768.0f) {
 			_p->setPosition(sf::Vector2f(_p->getPosition().x, 768.0f));
 		}
 	}
