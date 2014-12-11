@@ -119,6 +119,38 @@ void Skeleton::initHumanSkeleton() {
 	_constraints.push_back(new LinearConstraint(_points[12], _points[14]));
 	_constraints.push_back(new LinearConstraint(_points[13], _points[15]));
 
+
+	// Angular constraints
+	// Head
+	_constraints.push_back(new AngularConstraint(_points[0], _points[2], distanceBetween(_points[0]->getPosition(), _points[2]->getPosition()) - 30.0f));
+	_constraints.push_back(new AngularConstraint(_points[0], _points[3], distanceBetween(_points[0]->getPosition(), _points[3]->getPosition()) - 30.0f));
+	// Left shoulder
+	_constraints.push_back(new AngularConstraint(_points[5], _points[1], 80.0f));
+	//// Right shoulder
+	_constraints.push_back(new AngularConstraint(_points[6], _points[1], 80.0f));
+	//// Left elbow
+	_constraints.push_back(new AngularConstraint(_points[2], _points[7], 45.0f));
+	//// Right elbow
+	_constraints.push_back(new AngularConstraint(_points[3], _points[8], 45.0f));
+	//// Rib cage 
+	_constraints.push_back(new AngularConstraint(_points[2], _points[11], 20.0f));
+	//// Middle back
+	_constraints.push_back(new AngularConstraint(_points[4], _points[10], 0.0f));
+	//// Pelvis
+	_constraints.push_back(new AngularConstraint(_points[3], _points[12], 80.0f));
+	//// Left leg
+	_constraints.push_back(new AngularConstraint(_points[10], _points[13], distanceBetween(_points[10]->getPosition(), _points[13]->getPosition()) - 2.0f));
+	//// Right leg
+	_constraints.push_back(new AngularConstraint(_points[10], _points[14], distanceBetween(_points[10]->getPosition(), _points[14]->getPosition()) - 2.0f));
+	//// Left knee
+	_constraints.push_back(new AngularConstraint(_points[15], _points[11], 40.0f));
+	//// Right knee
+	_constraints.push_back(new AngularConstraint(_points[9], _points[12], 40.0f));
+	//// Dont cross knees
+	_constraints.push_back(new AngularConstraint(_points[13], _points[14], 30.0f));
+
+
+
 	for (auto& p : _points) {
 		p->setOldPosition(p->getPosition());
 		_constraints.push_back(new NotUnderScreenConstraint(p));
