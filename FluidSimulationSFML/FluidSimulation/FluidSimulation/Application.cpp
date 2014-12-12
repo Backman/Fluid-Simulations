@@ -1,8 +1,8 @@
 #include "Application.h"
-
+#include <iostream>
 
 Application::Application() :
-	_window(nullptr)
+	_window(nullptr), _mouseDown(false)
 {
 	_skeletons.push_back(new Skeleton(1.0f));
 }
@@ -53,6 +53,7 @@ void Application::processEvent() {
 			_window->close();
 		}
 		handleKeyEvents(evt);
+		handleMouseEvents(evt);
 	}
 }
 
@@ -75,10 +76,26 @@ void Application::handleKeyEvents(sf::Event& evt) {
 	}
 }
 
+void Application::handleMouseEvents(sf::Event& evt) {
+	if (evt.type == sf::Event::MouseButtonPressed) {
+		if (evt.mouseButton.button == sf::Mouse::Left) {
+			_mouseDown = true;
+		}
+	}
+	if (evt.type == sf::Event::MouseButtonReleased) {
+		if (evt.mouseButton.button == sf::Mouse::Left) {
+			_mouseDown = false;
+			_skeletons[0]->releaseMouse();
+		}
+	}
+	if (_mouseDown) {
+		sf::Vector2f mousePos(sf::Mouse::getPosition(*_window));
+		_skeletons[0]->addMouseForce(mousePos);
+	}
+}
+
 void Application::render() {
 	_window->clear();
-
-	//_particleSystem.render(_window);
 
 	for (auto& skeleton : _skeletons) {
 		skeleton->render(_window);

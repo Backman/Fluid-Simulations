@@ -20,6 +20,7 @@ protected:
 	void tick();
 	void render();
 	void handleKeyEvents(sf::Event& evt);
+	void handleMouseEvents(sf::Event& evt);
 	
 	void clearSkeletons();
 	
@@ -28,5 +29,7 @@ protected:
 
 	std::vector<Skeleton*> _skeletons;
 	ParticleSystem _particleSystem;
+
+	bool _mouseDown;
 };
 
