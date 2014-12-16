@@ -5,8 +5,6 @@
 class PointMass
 {
 public:
-	PointMass();
-	PointMass(const sf::Vector2f& pos, float mass);
 	PointMass(float xPos, float yPos, float mass);
 	~PointMass();
 
@@ -30,6 +28,8 @@ public:
 	void clearForce() { _force = sf::Vector2f(); }
 	void addForce(const sf::Vector2f& force) { _force += force; }
 
+	void render(sf::RenderWindow* rw);
+
 private:
 	/** Current position */
 	sf::Vector2f _position;
@@ -42,5 +42,7 @@ private:
 	float _mass;
 	/** The inverse mass, 1.0f / mass */
 	float _invMass;
+
+	sf::CircleShape _shape;
 };
 

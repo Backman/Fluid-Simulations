@@ -16,7 +16,7 @@ public:
 class LinearConstraint : public Constraint {
 public:
 	LinearConstraint(PointMass* p1, PointMass* p2) :
-		_joint1(p1), _p2(p2)
+		_p1(p1), _p2(p2)
 	{
 		_restLength = distanceBetween(p1->getPosition(), p2->getPosition());
 	}
@@ -37,7 +37,7 @@ public:
 	virtual void render(sf::RenderWindow* rw) override;
 
 private:
-	PointMass* _joint1;
+	PointMass* _p1;
 	PointMass* _p2;
 
 	float _restLength;
@@ -86,18 +86,28 @@ private:
 	float _minAngle, _maxAngle;
 };
 
-class NotUnderScreenConstraint : public Constraint {
+class MinMaxConstraint : public Constraint {
 public:
-	NotUnderScreenConstraint(PointMass* p) :
-		_p(p)
-	{}
+	MinMaxConstraint(PointMass* point, const sf::Vector2f& min, const sf::Vector2f& max) :
+		_p(point), _min(min), _max(max)
+	{ }
 
-	virtual void applyConstraint() override {
-		if(_p->getPosition().y > 768.0f) {
-			_p->setPosition(sf::Vector2f(_p->getPosition().x, 768.0f));
+	~MinMaxConstraint()
+	{
+		/*if (_p1 != nullptr) {
+		delete _p1;
+		_p1 = nullptr;
 		}
+		if (_p2 != nullptr) {
+		delete _p2;
+		_p2 = nullptr;
+		}*/
 	}
+
+	virtual void applyConstraint() override;
+	virtual void render(sf::RenderWindow* rw) override;
 
 private:
 	PointMass* _p;
+	sf::Vector2f _min, _max;
 };

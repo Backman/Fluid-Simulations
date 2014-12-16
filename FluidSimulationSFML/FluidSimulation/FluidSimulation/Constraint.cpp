@@ -2,21 +2,21 @@
 #include "VectorUtil.h"
 
 void LinearConstraint::applyConstraint() {
-	sf::Vector2f& x1 = _joint1->getPosition();
+	sf::Vector2f& x1 = _p1->getPosition();
 	sf::Vector2f& x2 = _p2->getPosition();
 	sf::Vector2f delta = x2 - x1;
 
 	float deltaLength = sqrt(dot(delta, delta));
-	float diff = (deltaLength - _restLength) / (deltaLength * (_joint1->getInvMass() + _p2->getInvMass()));
+	float diff = (deltaLength - _restLength) / (deltaLength * (_p1->getInvMass() + _p2->getInvMass()));
 
 
-	x1 += _joint1->getInvMass() * delta * diff;
+	x1 += _p1->getInvMass() * delta * diff;
 	x2 -= _p2->getInvMass() * delta * diff;
 }
 
 void LinearConstraint::render(sf::RenderWindow* rw) {
 	sf::Vertex line[] = {
-		sf::Vertex(_joint1->getPosition()),
+		sf::Vertex(_p1->getPosition()),
 		sf::Vertex(_p2->getPosition())
 	};
 	
@@ -63,5 +63,15 @@ void AngularConstraint::applyConstraint() {
 }
 
 void AngularConstraint::render(sf::RenderWindow* rw) {
+
+}
+
+void MinMaxConstraint::applyConstraint() {
+	sf::Vector2f& x = _p->getPosition();
+
+	x = vMin(vMax(x, _min), _max);
+}
+
+void MinMaxConstraint::render(sf::RenderWindow* rw) {
 
 }

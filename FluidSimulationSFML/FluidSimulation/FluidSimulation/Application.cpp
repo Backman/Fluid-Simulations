@@ -1,10 +1,21 @@
 #include "Application.h"
+#include "Skeleton.h"
 #include <iostream>
+#include <sstream>
 
 Application::Application() :
-	_window(nullptr), _mouseDown(false)
+	_window(nullptr), _mouseDown(false),
+	_clockHUD(_frameClock, _font)
 {
-	_skeletons.push_back(new Skeleton(1.0f));
+	_frameClock.setSampleDepth(100);
+	if (!_font.loadFromFile("Data/verdana.ttf"))
+	{
+		sf::err() << "Failed to load verdana.ttf";
+		exit(EXIT_FAILURE);
+	}
+	_skeletonText.setFont(_font);
+
+	createNewSkeleton();
 }
 
 
@@ -20,6 +31,21 @@ void Application::clearSkeletons() {
 	}
 }
 
+void Application::resetApplication() {
+	clearSkeletons();
+	createNewSkeleton();
+}
+
+void Application::addSkeleton(Skeleton* skeleton) {
+	_skeletons.push_back(skeleton);
+}
+
+void Application::createNewSkeleton() {
+	Skeleton* skeleton = new Skeleton(GRAVITY);
+	Skeleton::initHumanSkeleton(skeleton, true);
+	addSkeleton(skeleton);
+}
+
 void Application::shutdown() {
 	if (_window != nullptr) {
 		delete _window;
@@ -30,6 +56,9 @@ void Application::shutdown() {
 void Application::init(int width, int height, const std::string& title) {
 	if (_window == nullptr) {
 		_window = new sf::RenderWindow(sf::VideoMode(width, height), title);
+
+		sf::Vector2f textPos(_window->getSize().x - 100, 10.0f);
+		_skeletonText.setPosition(textPos);
 	}
 }
 
@@ -40,9 +69,13 @@ void Application::run() {
 	}
 
 	while (_window->isOpen()) {
+		_frameClock.beginFrame();
+
 		processEvent();
 		tick();
 		render();
+
+		_frameClock.endFrame();
 	}
 }
 
@@ -58,7 +91,6 @@ void Application::processEvent() {
 }
 
 void Application::tick() {
-	//_particleSystem.timeStep();
 	for (auto& skeleton : _skeletons) {
 		skeleton->update(1.0f / 60.0f);
 	}
@@ -66,13 +98,18 @@ void Application::tick() {
 
 void Application::handleKeyEvents(sf::Event& evt) {
 	switch (evt.key.code) {
-	case sf::Keyboard::Space:
-		//_particleSystem.timeStep();
-		break;
-
 	case sf::Keyboard::Escape:
 		_window->close();
 		break;
+	}
+	
+	if (evt.type == sf::Event::KeyPressed) {
+		if (evt.key.code == sf::Keyboard::R) {
+			resetApplication();
+		}
+		if (evt.key.code == sf::Keyboard::Space) {
+			createNewSkeleton();
+		}
 	}
 }
 
@@ -100,6 +137,14 @@ void Application::render() {
 	for (auto& skeleton : _skeletons) {
 		skeleton->render(_window);
 	}
+
+	int skeletonSize = _skeletons.size();
+	std::ostringstream convert;
+	convert << skeletonSize;
+	_skeletonText.setString(convert.str());
+	_window->draw(_skeletonText);
+	
+	_window->draw(_clockHUD);
 
 	_window->display();
 }

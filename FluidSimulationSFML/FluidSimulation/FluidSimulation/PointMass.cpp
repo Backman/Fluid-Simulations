@@ -1,20 +1,11 @@
 #include "PointMass.h"
 
-PointMass::PointMass() :
-	_position()
-{
-	setMass(0.1f);
-}
-
-PointMass::PointMass(const sf::Vector2f& pos, float mass) :
-	_position(pos)
-{
-	setMass(mass);
-}
-
 PointMass::PointMass(float xPos, float yPos, float mass) :
-	_position(xPos, yPos)
+	_position(xPos, yPos), _shape(5.0f)
 {
+	_shape.setFillColor(sf::Color::Red);
+	_shape.setOrigin(5.0f, 5.0f);
+
 	setMass(mass);
 }
 
@@ -31,4 +22,9 @@ void PointMass::setMass(float newMass) {
 	} else {
 		_invMass = std::numeric_limits<float>::max();
 	}
+}
+
+void PointMass::render(sf::RenderWindow* rw) {
+	_shape.setPosition(_position);
+	rw->draw(_shape);
 }

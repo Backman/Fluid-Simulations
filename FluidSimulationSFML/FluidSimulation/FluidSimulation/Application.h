@@ -1,8 +1,12 @@
 #pragma once
 
 #include <SFML\Graphics.hpp>
-#include "Skeleton.h"
-#include "ParticleSystem.h"
+#include "FrameClock.h"
+#include "ClockHUD.h"
+
+#define GRAVITY 4.82f
+
+class Skeleton;
 
 class Application
 {
@@ -14,6 +18,7 @@ public:
 	void shutdown();
 
 	void run();
+	void addSkeleton(Skeleton* skeleton);
 
 protected:
 	void processEvent();
@@ -22,14 +27,20 @@ protected:
 	void handleKeyEvents(sf::Event& evt);
 	void handleMouseEvents(sf::Event& evt);
 	
+	void createNewSkeleton();
+	void resetApplication();
 	void clearSkeletons();
 	
 	sf::RenderWindow* _window;
 
-
+	
 	std::vector<Skeleton*> _skeletons;
-	ParticleSystem _particleSystem;
+	sfx::FrameClock _frameClock;
+	sf::Text _skeletonText;
+	sf::Font _font;
+	ClockHUD _clockHUD;
 
 	bool _mouseDown;
+	
 };
 
