@@ -51,7 +51,7 @@ void Skeleton::verlet(float timeStep) {
 		sf::Vector2f& x = p->getPosition();
 		sf::Vector2f temp = x;
 		sf::Vector2f& oldX = p->getOldPosition();
-		sf::Vector2f& a = p->getForce();
+		sf::Vector2f& a = p->getForce() * p->getInvMass();
 
 		x = x * 2.0f - oldX + a * timeStep * timeStep;
 		oldX = temp;
@@ -61,7 +61,7 @@ void Skeleton::verlet(float timeStep) {
 void Skeleton::accumulateForces() {
 	for (auto& p : _points) {
 		p->clearForce();
-		p->addForce(sf::Vector2f(0.0f, _gravity));
+		p->addForce(sf::Vector2f(0.0f, _gravity * p->getMass()));
 	}
 
 	while (!_forceQueue.empty()) {
@@ -101,7 +101,7 @@ void Skeleton::addMouseForce(const sf::Vector2f& mousePos) {
 	}
 
 	sf::Vector2f force = mousePos - _nearestPoint->getPosition();
-	addForce(force, _nearestPoint);
+	addForce(force * 100.0f, _nearestPoint);
 }
 
 void Skeleton::addForce(const sf::Vector2f& force, PointMass* point) {
