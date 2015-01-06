@@ -226,7 +226,7 @@ void Skeleton::initHumanSkeleton(Skeleton* skeleton, bool randomPos) {
 
 	for (auto& p : skeleton->_points) {
 		p->setOldPosition(p->getPosition());
-		skeleton->addConstraint(new MinMaxConstraint(p, sf::Vector2f(0.0f, 0.0f), sf::Vector2f(1024.0f, 768.0f)));
+		skeleton->addConstraint(new MinMaxConstraint(p, sf::Vector2f(10.0f, 10.0f), sf::Vector2f(1014.0f, 758.0f)));
 	}
 }
 #pragma endregion
