@@ -27,4 +27,11 @@ void PointMass::setMass(float newMass) {
 void PointMass::render(sf::RenderWindow* rw) {
 	_shape.setPosition(_position);
 	rw->draw(_shape);
+
+	sf::Vertex line[] = {
+		sf::Vertex(_position, sf::Color::Green),
+		sf::Vertex(_position + _force * 0.1f, sf::Color::Green)
+	};
+	
+	rw->draw(line, 2, sf::Lines);
 }

@@ -4,7 +4,7 @@
 #include "FrameClock.h"
 #include "ClockHUD.h"
 
-#define GRAVITY 4.82f
+#define GRAVITY 9.82f
 
 class Skeleton;
 
@@ -20,7 +20,7 @@ public:
 	void run();
 	void addSkeleton(Skeleton* skeleton);
 
-protected:
+private:
 	void processEvent();
 	void tick();
 	void render();

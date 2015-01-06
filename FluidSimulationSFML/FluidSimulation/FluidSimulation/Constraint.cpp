@@ -6,10 +6,9 @@ void LinearConstraint::applyConstraint() {
 	sf::Vector2f& x2 = _p2->getPosition();
 	sf::Vector2f delta = x2 - x1;
 
-	float deltaLength = sqrt(dot(delta, delta));
+	float deltaLength = magnitude(delta);
 	float diff = (deltaLength - _restLength) / (deltaLength * (_p1->getInvMass() + _p2->getInvMass()));
-
-
+	
 	x1 += _p1->getInvMass() * delta * diff;
 	x2 -= _p2->getInvMass() * delta * diff;
 }

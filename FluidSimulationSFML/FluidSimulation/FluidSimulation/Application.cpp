@@ -56,7 +56,7 @@ void Application::shutdown() {
 void Application::init(int width, int height, const std::string& title) {
 	if (_window == nullptr) {
 		_window = new sf::RenderWindow(sf::VideoMode(width, height), title);
-
+		
 		sf::Vector2f textPos(_window->getSize().x - 100, 10.0f);
 		_skeletonText.setPosition(textPos);
 	}
@@ -91,6 +91,11 @@ void Application::processEvent() {
 }
 
 void Application::tick() {
+	if (_mouseDown) {
+		sf::Vector2f mousePos(sf::Mouse::getPosition(*_window));
+		_skeletons[0]->addMouseForce(mousePos);
+	}
+
 	for (auto& skeleton : _skeletons) {
 		skeleton->update(1.0f / 60.0f);
 	}
@@ -124,10 +129,6 @@ void Application::handleMouseEvents(sf::Event& evt) {
 			_mouseDown = false;
 			_skeletons[0]->releaseMouse();
 		}
-	}
-	if (_mouseDown) {
-		sf::Vector2f mousePos(sf::Mouse::getPosition(*_window));
-		_skeletons[0]->addMouseForce(mousePos);
 	}
 }
 

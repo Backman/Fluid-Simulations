@@ -1,6 +1,7 @@
 #include "Skeleton.h"
 #include "Constraint.h"
 #include "PointMass.h"
+#include <iostream>
 
 float randomRange(float min, float max) {
 	return min + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (max - min)));
@@ -68,7 +69,6 @@ void Skeleton::accumulateForces() {
 		ForceApplier applier = _forceQueue.front();
 		_forceQueue.pop();
 
-		//applier.point->addForce(normalize(applier.force) * 300.0f);
 		applier.point->addForce(applier.force);
 	}
 }
@@ -101,7 +101,7 @@ void Skeleton::addMouseForce(const sf::Vector2f& mousePos) {
 	}
 
 	sf::Vector2f force = mousePos - _nearestPoint->getPosition();
-	addForce(force * 100.0f, _nearestPoint);
+	addForce(force * 10.0f, _nearestPoint);
 }
 
 void Skeleton::addForce(const sf::Vector2f& force, PointMass* point) {
